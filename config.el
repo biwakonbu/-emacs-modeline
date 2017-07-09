@@ -25,11 +25,16 @@
 		(powerline-raw (format "%s / %s" backend (vc-working-revision buffer-file-name backend)))
 		(powerline-raw "]" (modeline/mode-line)))))))
 (defun modeline/filetype ()
-  (format "%s %s"
-	  (custom-modeline-major-mode-icon)
-	  (capitalize (cadr (all-the-icons-match-to-alist
+  (let ((file-type (cadr (all-the-icons-match-to-alist
 			     (buffer-name)
-			     all-the-icons-icon-alist)))))
+			     all-the-icons-icon-alist))))
+    (if (string= "file-o" file-type)
+	(format "%s %s"
+		(custom-modeline-major-mode-icon)
+		(capitalize (replace-regexp-in-string "-mode$" "" (format "%s" major-mode))))
+      (format "%s %s"
+	      (custom-modeline-major-mode-icon)
+	      (capitalize file-type)))))
 
 (defun custom-modeline-buffer-size ()
   (format " %s " (powerline-buffer-size nil 'I)))
