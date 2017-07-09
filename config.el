@@ -5,7 +5,7 @@
 
 (defun modeline/git-icon ()
   (all-the-icons-alltheicon
-   "git" :height modeline/icon-height :v-adjust -0.1 :face 'all-the-icons-lred))
+   "git" :height modeline/icon-height :v-adjust 0 :face 'all-the-icons-lred))
 (defun modeline/git-branch-icon ()
   (all-the-icons-octicon
    "git-branch" :height modeline/icon-height :v-adjust 0 :face 'all-the-icons-lgreen))
@@ -14,7 +14,7 @@
                   "[\r\n]+\\'" ""
                   (shell-command-to-string "git symbolic-ref -q HEAD")))
          (mode-line-str (if (string-match "^refs/heads/" branch)
-                            (format "%s %s" (modeline/git-branch-icon) (substring branch 11))
+                            (format "%s %s %s" (modeline/git-icon) (modeline/git-branch-icon) (substring branch 11))
                           "")))
     (powerline-raw (format " %s" mode-line-str) 'all-the-icons-lgreen)))
 
@@ -56,7 +56,7 @@
   "modeline mode-line face"
   :group 'powerline)
 
-(set-face-attribute 'mode-line nil :background "gray15" :box nil :height 105)
+(set-face-attribute 'mode-line nil :background "gray15" :box nil :height 105 :foreground "gray85" :bold t)
 (setq-default mode-line-format
 	      '("%e"
 		(:eval
@@ -73,13 +73,13 @@
 							 (powerline-current-separator)
 							 (cdr powerline-default-separator-dir))))
 			(lhs (list
-			      (powerline-raw (custom-modeline-buffer-size) face1)))
+			      (powerline-raw (custom-modeline-buffer-size) face1)
+			      (powerline-raw (custom-modeline-buffername))
+			      (powerline-raw (modeline/git-branch))))
 			(center (list
-				 (powerline-raw (custom-modeline-buffername))
 				 (powerline-raw (custom-modeline-major-mode-icon))))
 			(rhs (list
 			      (powerline-raw (custom-modeline-line-and-column-number) 'l)
-			      (powerline-raw (modeline/git-branch))
 			      (powerline-raw " "))))
 		   (concat
 		    (powerline-render lhs)
