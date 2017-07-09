@@ -1,13 +1,10 @@
 (defconst emacs-ui/layers/install-packages
   '(all-the-icons
-    powerline))
+    spaceline))
 
 (layers/install-packages emacs-ui/layers/install-packages)
 
-(use-package poweline
-  :init
-  (powerline-default-theme))
-
-(use-package all-the-icons-mode)
-
-
+(use-package all-the-icons)
+;;(require 'all-the-icons)
+(use-package spaceline-config
+  :config (spaceline-emacs-theme))
